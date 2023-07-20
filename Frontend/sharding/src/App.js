@@ -1,9 +1,10 @@
+const { default: Signup } = require("./components/Signup");
 
 
 function App() {
   return (
     <>
-      <p className="text-red-500">hello</p>
+      <Signup/>
     </>
   );
 }
