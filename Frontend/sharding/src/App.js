@@ -1,11 +1,12 @@
-import Auth from "./pages/Auth";
+import Routes from "./pages/Routes";
+
 
 
 
 function App() {
   return (
     <>
-     <Auth/>
+     <Routes/>
     </>
   );
 }
