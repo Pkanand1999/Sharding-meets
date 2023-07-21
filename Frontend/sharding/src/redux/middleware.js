@@ -1,9 +1,9 @@
 import axios from 'axios';
-const url=process.env.REACT_APP_BASE_URL
+const url=`${process.env.REACT_APP_BASE_URL}`
 
 
 export async function register(data,dispatch){
-    axios.post(`http://localhost:8080/api/v1/auth/register`,data )
+    axios.post(`${url}/register`,data )
     .then((res)=>{
       console.log(res);
         dispatch({
@@ -21,7 +21,7 @@ export async function register(data,dispatch){
 }
 
 export function login(data,dispatch){
-    axios.post(`http://localhost:8080/api/v1/auth/login`,data )
+    axios.post(`${url}/login`,data )
         .then((res)=>{
             console.log(res.data)
             localStorage.setItem('chatToken',res.data.token)
@@ -42,7 +42,7 @@ export function login(data,dispatch){
 
   export function userIsLoggedIn(authToken,dispatch){
     console.log("user is logged in")
-      fetch(`http://localhost:8080/api/v1/auth/loggedInUser`, {
+      fetch(`${url}/loggedInUser`, {
           headers: {
             'authorization': `Bearer ${authToken}`
           }
