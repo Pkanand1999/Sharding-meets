@@ -38,3 +38,22 @@ export function login(data,dispatch){
             })
         })
   }
+
+
+  export function userIsLoggedIn(authToken,dispatch){
+    console.log("user is logged in")
+      fetch(`${url}/loggedInUser`, {
+          headers: {
+            'authorization': `Bearer ${authToken}`
+          }
+        })
+        .then(res => res.json())
+        .then(result => {
+          console.log(result);
+          const user = result.data;
+  dispatch({
+    type:"LOGGEDIN_USER",
+    payload:user
+  })
+        })
+  }
