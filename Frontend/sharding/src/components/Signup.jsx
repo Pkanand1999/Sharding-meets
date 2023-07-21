@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { register } from '../redux/middleware';
-import {useDispatch} from 'react-redux';
-
+import { useDispatch ,useSelector} from "react-redux";
+import { userIsLoggedIn } from '../redux/middleware';
 
 function Signup({gotologin}) {
   const dispatch=useDispatch();
@@ -9,10 +9,19 @@ function Signup({gotologin}) {
   const [username,setUsername]=useState('');
   const [email,setEmail]=useState('');
   const [password,setPassword]=useState('');
+  const data=useSelector((e)=>{
+    return e.reducerAuth.token
+  })
 
-  function signupuser(){
+  function signupuser(e){
+    e.preventDefault();
     register({name:username,email:email,password:password},dispatch)
   }
+
+  useEffect(() => {
+    userIsLoggedIn(data, dispatch);
+  }, [data])
+
 
   return (
     <>
@@ -29,7 +38,7 @@ function Signup({gotologin}) {
             value={password}
             onChange={(e)=>setPassword(e.target.value)}
             />
-           {email.length>5 && password.length>5 && username.length>3 && <button className='bg-blue-500 text-white block w-full rounded-sm p-2 font-bold' onClick={signupuser}>Sign Up</button>}
+           {email.length>5 && password.length>5 && username.length>3 && <button className='bg-blue-500 text-white block w-full rounded-sm p-2 font-bold' onClick={()=>signupuser()}>Sign Up</button>}
             <p className='text-md mt-4'>Already have an account? <span className='text-blue-600 cursor-pointer underline underline-offset-4 font-bold' onClick={()=>gotologin()}>Login</span></p>
         </form>
         </>

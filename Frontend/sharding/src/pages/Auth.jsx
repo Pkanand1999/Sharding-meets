@@ -1,4 +1,4 @@
-import React, { useState }  from 'react';
+import React, { useEffect, useState }  from 'react';
 import Login from '../components/Login';
 import Signup from '../components/Signup';
 
@@ -14,6 +14,7 @@ function Auth() {
     function gotoSignup(){
         setLogin(false);
     }
+    
 
 
   return (

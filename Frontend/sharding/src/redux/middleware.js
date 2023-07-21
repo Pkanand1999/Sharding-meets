@@ -3,7 +3,7 @@ const url=process.env.REACT_APP_BASE_URL
 
 
 export async function register(data,dispatch){
-    axios.post(`${url}/register`,data )
+    axios.post(`http://localhost:8080/api/v1/auth/register`,data )
     .then((res)=>{
       console.log(res);
         dispatch({
@@ -21,7 +21,7 @@ export async function register(data,dispatch){
 }
 
 export function login(data,dispatch){
-    axios.post(`${url}/login`,data )
+    axios.post(`http://localhost:8080/api/v1/auth/login`,data )
         .then((res)=>{
             console.log(res.data)
             localStorage.setItem('chatToken',res.data.token)
@@ -42,7 +42,7 @@ export function login(data,dispatch){
 
   export function userIsLoggedIn(authToken,dispatch){
     console.log("user is logged in")
-      fetch(`${url}/loggedInUser`, {
+      fetch(`http://localhost:8080/api/v1/auth/loggedInUser`, {
           headers: {
             'authorization': `Bearer ${authToken}`
           }

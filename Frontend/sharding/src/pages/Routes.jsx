@@ -1,18 +1,17 @@
-import { useEffect } from "react";
+
 import Auth from "./Auth";
 import Chat from "./Chat";
-import { userIsLoggedIn } from "../redux/middleware";
-import { useDispatch } from "react-redux";
+import {useSelector} from "react-redux";
 
 export default function Routes() {
-  const dispatch = useDispatch();
+  const data=useSelector((e)=>{
+    return e.reducerAuth.token
+  })
   const token = localStorage.getItem("chatToken");
 
-  useEffect(() => {
-    userIsLoggedIn(token, dispatch);
-  }, [token])
+  
 
-  if (token) {
+  if (token || data) {
     return <Chat />;
   }
 
