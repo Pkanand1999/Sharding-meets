@@ -1,10 +1,11 @@
-const { default: Signup } = require("./components/Signup");
+import Auth from "./pages/Auth";
+
 
 
 function App() {
   return (
     <>
-      <Signup/>
+     <Auth/>
     </>
   );
 }
