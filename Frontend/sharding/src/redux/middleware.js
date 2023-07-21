@@ -3,7 +3,7 @@ const url=process.env.REACT_APP_BASE_URL
 
 
 export async function register(data,dispatch){
-    axios.post(`http://localhost:8080/api/v1/auth/register`,data )
+    axios.post(`${url}/register`,data )
     .then((res)=>{
       console.log(res);
         dispatch({
@@ -19,3 +19,22 @@ export async function register(data,dispatch){
         })
     })
 }
+
+export function login(data,dispatch){
+    axios.post(`${url}/login`,data )
+        .then((res)=>{
+            console.log(res.data)
+            localStorage.setItem('chatToken',res.data.token)
+            dispatch({
+                type:"LOGIN_SUCCESS",
+                payload:res.data
+            })
+        }).catch((e)=>{
+          console.log(e)
+            dispatch({
+                type:"LOGIN_FAILURE",
+                payload:true,
+ 
+            })
+        })
+  }

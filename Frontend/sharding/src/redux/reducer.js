@@ -1,13 +1,9 @@
 const initialState = {
-    token: localStorage.getItem('token'),
     isAuth: false,
     name:"",
     email:"",
     image:"",
-    credit:"",
     isError: false,
-    background: localStorage.getItem('bgcolour') || "black",
-    color: localStorage.getItem('color') || "white",
     isSignup:false,
     chat:[],
     time:[],
@@ -32,12 +28,10 @@ const initialState = {
           case "LOGIN_SUCCESS":{
             return{
               ...state,
-              token:action.payload.token,
               isAuth:true,
               name:action.payload.name,
               email:action.payload.email,
               image:action.payload.image,
-              credit:action.payload.credit
             }
         
           }
@@ -48,7 +42,6 @@ const initialState = {
               name:action.payload.name,
               email:action.payload.email,
               image:action.payload.image,
-              credit:action.payload.credit
             }
         
           }
@@ -58,37 +51,7 @@ const initialState = {
               isError:action.payload
             }
           }
-          case "CHANGE_THEME":{
-            return{
-              ...state,
-              background:action.payload[0],
-              color:action.payload[1]
-            }
-          }
-          case "LOG_OUT":{
-            return{
-              ...state,
-              isAuth: false,
-              name:"",
-              email:"",
-              image:"",
-              credit:"",
-              isError: false,
-              token: localStorage.getItem('token'),
-            }
-          }
-          case "CHAT":{
-            return{
-              ...state,
-              chat:[...state.chat,action.payload]
-            }
-          }
-          case "TIME":{
-            return{
-              ...state,
-              chat:[...state.time,action.payload]
-            }
-          }
+         
           default:
           return state;
         }
