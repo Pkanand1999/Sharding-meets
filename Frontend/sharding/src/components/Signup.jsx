@@ -14,12 +14,14 @@ function Signup({gotologin}) {
   })
 
   function signupuser(e){
-    e.preventDefault();
+    e.preventDefault()
     register({name:username,email:email,password:password},dispatch)
   }
 
   useEffect(() => {
-    userIsLoggedIn(data, dispatch);
+    if(data){
+      userIsLoggedIn(data, dispatch);
+    }
   }, [data])
 
 
@@ -38,7 +40,7 @@ function Signup({gotologin}) {
             value={password}
             onChange={(e)=>setPassword(e.target.value)}
             />
-           {email.length>5 && password.length>5 && username.length>3 && <button className='bg-blue-500 text-white block w-full rounded-sm p-2 font-bold' onClick={()=>signupuser()}>Sign Up</button>}
+           {email.length>5 && password.length>5 && username.length>3 && <button className='bg-blue-500 text-white block w-full rounded-sm p-2 font-bold' onClick={(e)=>signupuser(e)}>Sign Up</button>}
             <p className='text-md mt-4'>Already have an account? <span className='text-blue-600 cursor-pointer underline underline-offset-4 font-bold' onClick={()=>gotologin()}>Login</span></p>
         </form>
         </>

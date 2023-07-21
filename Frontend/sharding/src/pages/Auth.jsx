@@ -18,7 +18,7 @@ function Auth() {
 
 
   return (
-    <div className='bg-green-100 h-screen flex items-center'>
+    <div className='bg-pink-100 h-screen flex items-center'>
 {login ? <Login gotoSignup={gotoSignup}/>:<Signup gotologin={gotologin}/>}
     </div>
   )
