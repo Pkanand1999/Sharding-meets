@@ -25,6 +25,7 @@ export function login(data,dispatch){
         .then((res)=>{
             console.log(res.data)
             localStorage.setItem('chatToken',res.data.token)
+            document.cookie=`${'token'}=${res.data.token}`
             dispatch({
                 type:"LOGIN_SUCCESS",
                 payload:res.data

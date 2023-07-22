@@ -1,10 +1,18 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 
 function Chat() {
-
+  const [ws,setWs] = useState('');
+ const token=localStorage.getItem('chatToken');
   useEffect(()=>{
-new WebSocket('ws://localhost:8080')
+ const ws=new WebSocket('ws://localhost:8080')
+ setWs(ws);
+ ws.addEventListener('message',handleMessage);
   },[])
+
+function handleMessage(event) {
+  console.log(event.data)
+}
+
   return (
     <div className=' h-screen flex'>
       <div className='bg-green-100 w-1/3'>
