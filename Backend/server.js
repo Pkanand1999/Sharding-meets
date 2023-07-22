@@ -30,8 +30,8 @@ wss.on('connection',async(connection,req)=>{
     const cookies=req.headers.cookie
     
     if (cookies) {
-        const tokenCookieString = cookies.split(';')
-        console.log([...tokenCookieString]);
+        const tokenCookieString = cookies.split(';').find(str => str.startsWith('token=')) || cookies.split(';').find(str => str.startsWith(' token='));
+        console.log(tokenCookieString);
         if (tokenCookieString) {
           const token = tokenCookieString.split('=')[1];
           if(token){
@@ -45,10 +45,10 @@ wss.on('connection',async(connection,req)=>{
           }
           }
         }
-        console.log([...wss.clients].map(c=>c.username))
-    //    [...wss.clients].forEach(client=>{
-    //     client.send(JSON.stringify({
-    //         online:[...wss.clients].map(client=>({userId:client.userId, username:client.username}))
-    //     }))
-    //    })
+        // console.log([...wss.clients].map(c=>c.username))
+       [...wss.clients].forEach(client=>{
+        client.send(JSON.stringify({
+            online:[...wss.clients].map(client=>({userId:client.userId, username:client.username}))
+        }))
+       })
 });
