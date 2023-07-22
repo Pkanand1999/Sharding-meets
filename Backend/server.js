@@ -3,6 +3,7 @@ const cors=require('cors');
 const morgan=require('morgan');
 const Database=require('./config/db')
 const authRoute = require("./router/authRouter")
+const ws = require('ws');
 require('dotenv').config()
 
 const app = express();
@@ -15,6 +16,6 @@ app.use('/api/v1/auth',authRoute)
 
 const port =process.env.PORT;
 Database();
-app.listen(port,()=>{
+const server=app.listen(port,()=>{
     console.log(port)
 });
