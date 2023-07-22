@@ -1,4 +1,5 @@
 import React, { useEffect,useState } from 'react'
+import Avatar from '../components/Avatar';
 
 function Chat() {
   const [ws,setWs] = useState('');
@@ -36,7 +37,10 @@ function handleMessage(event) {
 Online Buddies</div>
         {
           Object.keys(onlineBuddy).map((userId) => {
-            return <div className='border border-blue-400 py-2' key={[userId]}>{onlineBuddy[userId]}</div>
+            return <div className='border border-blue-400 py-2 flex gap-4 items-center' key={[userId]}>
+              <Avatar/>
+              <span>{onlineBuddy[userId]}</span>
+              </div>
           })
         }
       </div>
