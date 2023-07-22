@@ -19,10 +19,10 @@ function Chat() {
 
 function handleMessage(event) {
   const msgData=JSON.parse(event.data);
-  console.log(msgData)
-  // if('online' in msgData) {
-  //   showOnlinePeople(msgData.online);
-  // }
+  // console.log(msgData)
+  if('online' in msgData) {
+    showOnlinePeople(msgData.online);
+  }
 }
 
   return (
