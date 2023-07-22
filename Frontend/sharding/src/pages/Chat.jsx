@@ -2,6 +2,7 @@ import React, { useEffect,useState } from 'react'
 
 function Chat() {
   const [ws,setWs] = useState('');
+  const [onlineBuddy,setOnlineBuddy] = useState([])
  const token=localStorage.getItem('chatToken');
   useEffect(()=>{
  const ws=new WebSocket('ws://localhost:8080')
@@ -14,7 +15,7 @@ function Chat() {
     people.forEach(({userId,username})=>{
        peopleObj[userId]=username
     })
-    console.log(peopleObj)
+    setOnlineBuddy(peopleObj);
   }
 
 function handleMessage(event) {
