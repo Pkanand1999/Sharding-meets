@@ -24,5 +24,5 @@ const wss=new ws.WebSocketServer({server});
 
 
 wss.on('connection',(connection)=>{
-    console.log(connection)
+    console.log('connection')
 })

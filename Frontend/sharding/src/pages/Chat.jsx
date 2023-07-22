@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 function Chat() {
+
+  useEffect(()=>{
+new WebSocket('ws://localhost:8080')
+  },[])
   return (
     <div className=' h-screen flex'>
       <div className='bg-green-100 w-1/3'>
