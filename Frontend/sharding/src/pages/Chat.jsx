@@ -37,9 +37,9 @@ function handleMessage(event) {
 Online Buddies</div>
         {
           Object.keys(onlineBuddy).map((userId) => {
-            return <div className='border border-blue-400 py-2 pl-4 rounded-2xl flex gap-4 items-center mb-2' key={[userId]}>
-              <Avatar/>
-              <span>{onlineBuddy[userId]}</span>
+            return <div className='border border-blue-400 py-2 pl-4 rounded-2xl flex gap-4 items-center mb-2 bg-teal-200 cursor-pointer' key={[userId]}>
+              <Avatar username={onlineBuddy[userId]} userId={userId}/>
+              <span className='text-2xl font-bold text-teal-800'>{onlineBuddy[userId]}</span>
               </div>
           })
         }
