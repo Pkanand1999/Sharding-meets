@@ -9,8 +9,20 @@ function Chat() {
  ws.addEventListener('message',handleMessage);
   },[])
 
+  function showOnlinePeople(people){
+    const peopleObj={}
+    people.forEach(({userId,username})=>{
+       peopleObj[userId]=username
+    })
+    console.log(peopleObj)
+  }
+
 function handleMessage(event) {
-  console.log(event.data)
+  const msgData=JSON.parse(event.data);
+  console.log(msgData)
+  // if('online' in msgData) {
+  //   showOnlinePeople(msgData.online);
+  // }
 }
 
   return (
