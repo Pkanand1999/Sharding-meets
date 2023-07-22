@@ -19,3 +19,10 @@ Database();
 const server=app.listen(port,()=>{
     console.log(port)
 });
+
+const wss=new ws.WebSocketServer({server});
+
+
+wss.on('connection',(connection)=>{
+    console.log(connection)
+})
