@@ -2,7 +2,7 @@ import React, { useEffect,useState } from 'react'
 
 function Chat() {
   const [ws,setWs] = useState('');
-  const [onlineBuddy,setOnlineBuddy] = useState([])
+  const [onlineBuddy,setOnlineBuddy] = useState({})
  const token=localStorage.getItem('chatToken');
   useEffect(()=>{
  const ws=new WebSocket('ws://localhost:8080')
@@ -28,8 +28,12 @@ function handleMessage(event) {
 
   return (
     <div className=' h-screen flex'>
-      <div className='bg-green-100 w-1/3'>
-        Contacts
+      <div className='bg-green-100 w-1/3 p-2'>
+        {
+          Object.keys(onlineBuddy).map((userId) => {
+            return <div key={[userId]}>{onlineBuddy[userId]}</div>
+          })
+        }
       </div>
       <div className='bg-green-200 w-2/3 p-2 flex flex-col'>
         <div className='flex-grow'>messages</div>
