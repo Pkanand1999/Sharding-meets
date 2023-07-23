@@ -85,6 +85,7 @@ function sendMessage(event){
 setAllMessages(prev=>([...prev, {text:message,
 sender:id,
 recipient:getuserId,
+_id:Date.now(),
 }]));
 }
 
@@ -97,7 +98,7 @@ useEffect(() => {
 
 let onlinePeoplehere={...onlineBuddy}
 delete onlinePeoplehere[id]
-// const uniqueMessage= uniqBy(allMessages, id)
+const uniqueMessage= uniqBy(allMessages, '_id')
 
   return (
     <div className=' h-screen flex'>
@@ -108,7 +109,7 @@ delete onlinePeoplehere[id]
             return <div onClick={()=>setUserId(userId)}
             className={"border border-blue-400 py-2 pl-4 rounded-2xl flex gap-4 items-center mb-2 cursor-pointer "+(userId===getuserId? 'bg-blue-200':'bg-pink-200') }
             key={[userId]}>
-              <Avatar username={onlinePeoplehere[userId]} userId={userId}/>
+              <Avatar online={true} username={onlinePeoplehere[userId]} userId={userId}/>
               <span className='text-2xl font-bold text-teal-800'>{onlinePeoplehere[userId]}</span>
               </div>
           })
@@ -124,11 +125,9 @@ delete onlinePeoplehere[id]
           <div className='relative h-full'>
             <div className='overflow-y-scroll absolute inset-0'>
             {
-              allMessages.map((msg,i)=>{
+              uniqueMessage.map((msg,i)=>{
                 return <div key={i} className={(msg.sender===id?'text-right':'text-left')}>
-                  <div  className={" p-2 m-2 text-sm rounded-md "+(msg.sender===id? ' bg-blue-400 text-white font-bold inline-block':'font-bold bg-pink-400 text-gray-600 inline-block')}>{msg.text}<br/>
-                sender:{msg.sender}<br/>
-                my id:{id}<br/>
+                  <div  className={" p-2 m-2 text-sm rounded-md "+(msg.sender===id? ' bg-blue-400 text-white font-bold inline-block':'font-bold bg-pink-400 text-gray-600 inline-block')}>{msg.text}
                 </div>
                 </div>
               })
