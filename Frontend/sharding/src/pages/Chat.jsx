@@ -97,6 +97,12 @@ useEffect(() => {
   }
 }, [allMessages]);
 
+// logout functionality  
+function Logout(){
+  localStorage.removeItem('chatToken')
+  window.location.reload(false);
+}
+
 useEffect(()=>{
   axios.get('http://localhost:8080/people').then(res => {
     // console.log(res.data,"data....");
@@ -118,7 +124,8 @@ const uniqueMessage= uniqBy(allMessages, '_id')
 
   return (
     <div className=' h-screen flex'>
-      <div className='bg-green-100 w-1/3 p-4'>
+      <div className='bg-green-100 w-1/3 p-4 flex flex-col'>
+        <div className='flex-grow'>
         <Logo/>
         {
           Object.keys(onlinePeoplehere).map((userId) => {
@@ -140,7 +147,11 @@ const uniqueMessage= uniqBy(allMessages, '_id')
               </div>
           })
         }
+        </div>
         
+        <div className='bottom-0 bg-red-500 w-full flex items-center justify-center p-2 rounded-md cursor-pointer' onClick={Logout}>
+          <button className='text-md font-bold '>Log Out</button>
+        </div>
       </div>
       <div className='bg-green-200 w-2/3 p-2 flex flex-col'>
         <div className='flex-grow'>
@@ -154,7 +165,7 @@ const uniqueMessage= uniqBy(allMessages, '_id')
             {
               uniqueMessage.map((msg,i)=>{
                 return <div key={i} className={(msg.sender===id?'text-right':'text-left')}>
-                  <div  className={" p-2 m-2 text-sm rounded-md "+(msg.sender===id? ' bg-blue-400 text-white font-bold inline-block':'font-bold bg-pink-400 text-gray-600 inline-block')}>{msg.text}
+                  <div  className={" p-2 m-2 text-sm rounded-md "+(msg.sender===id? ' bg-blue-500 text-white font-bold inline-block':'font-bold bg-pink-400 text-gray-600 inline-block')}>{msg.text}
                 </div>
                 </div>
               })
