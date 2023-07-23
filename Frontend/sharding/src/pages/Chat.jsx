@@ -62,7 +62,9 @@ if(getuserId){
 axios.get('http://localhost:8080/messages/'+getuserId,
 {headers: {
   'authorization': `Bearer ${authToken}`
-}})
+}}).then((res)=>{
+  setAllMessages(res.data);
+})
 }
 },[getuserId])
 
