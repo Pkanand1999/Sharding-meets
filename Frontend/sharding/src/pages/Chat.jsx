@@ -1,10 +1,24 @@
 import React, { useEffect,useState } from 'react'
 import Avatar from '../components/Avatar';
+import Logo from '../components/Logo';
+import { useSelector,useDispatch } from 'react-redux';
+import { userIsLoggedIn } from '../redux/middleware';
 
 function Chat() {
   const [ws,setWs] = useState('');
   const [onlineBuddy,setOnlineBuddy] = useState({})
- const token=localStorage.getItem('chatToken');
+  const [getuserId,setUserId] = useState(null);
+  const [message,setMessage]=useState('');
+  const [allMessages,setAllMessages] = useState([]);
+  const dispatch=useDispatch();
+  const data=useSelector((e)=>{
+    return e.reducerAuth.token
+  })
+  const id=useSelector((e)=>{
+    return e.reducerAuth.id
+  })
+  console.log(id)
+
   useEffect(()=>{
  const ws=new WebSocket('ws://localhost:8080')
  setWs(ws);
@@ -19,40 +33,75 @@ function Chat() {
     setOnlineBuddy(peopleObj);
   }
 
+  let onlinePeoplehere={...onlineBuddy}
+  delete onlinePeoplehere[id]
+
 function handleMessage(event) {
-  const msgData=JSON.parse(event.data);
-  // console.log(msgData)
-  if('online' in msgData) {
-    showOnlinePeople(msgData.online);
+  const messageData=JSON.parse(event.data);
+  // console.log(messageData)
+  if('online' in messageData) {
+    showOnlinePeople(messageData.online);
+  }else{
+    setAllMessages(prev=>([...prev, {text:messageData.text,isMine:false}]));
   }
+}
+
+useEffect(() => {
+  if(data){
+    userIsLoggedIn(data, dispatch);
+  }
+}, [data])
+
+function sendMessage(event){
+  event.preventDefault();
+  ws.send(JSON.stringify({
+    
+      recipient:getuserId,
+      text:message,
+  }))
+  setMessage('');
+setAllMessages(prev=>([...prev, {text:message,isMine:true}]));
 }
 
   return (
     <div className=' h-screen flex'>
       <div className='bg-green-100 w-1/3 p-4'>
-        <div className='text-green-800 font-bold flex gap-2 bg-blue-200 mb-4 p-2'>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-  <path fillRule="evenodd" d="M5.337 21.718a6.707 6.707 0 01-.533-.074.75.75 0 01-.44-1.223 3.73 3.73 0 00.814-1.686c.023-.115-.022-.317-.254-.543C3.274 16.587 2.25 14.41 2.25 12c0-5.03 4.428-9 9.75-9s9.75 3.97 9.75 9c0 5.03-4.428 9-9.75 9-.833 0-1.643-.097-2.417-.279a6.721 6.721 0 01-4.246.997z" clipRule="evenodd" />
-</svg>
-Online Buddies</div>
+        <Logo/>
         {
-          Object.keys(onlineBuddy).map((userId) => {
-            return <div className='border border-blue-400 py-2 pl-4 rounded-2xl flex gap-4 items-center mb-2 bg-teal-200 cursor-pointer' key={[userId]}>
-              <Avatar username={onlineBuddy[userId]} userId={userId}/>
-              <span className='text-2xl font-bold text-teal-800'>{onlineBuddy[userId]}</span>
+          Object.keys(onlinePeoplehere).map((userId) => {
+            return <div onClick={()=>setUserId(userId)}
+            className={"border border-blue-400 py-2 pl-4 rounded-2xl flex gap-4 items-center mb-2 cursor-pointer "+(userId===getuserId? 'bg-blue-200':'bg-pink-200') }
+            key={[userId]}>
+              <Avatar username={onlinePeoplehere[userId]} userId={userId}/>
+              <span className='text-2xl font-bold text-teal-800'>{onlinePeoplehere[userId]}</span>
               </div>
           })
         }
       </div>
       <div className='bg-green-200 w-2/3 p-2 flex flex-col'>
-        <div className='flex-grow'>messages</div>
-        <div className='flex gap-2 mx-2'>
-          <input type="text" placeholder='Type your messages' className='bg-white border-2 p-2 rounded-sm flex-grow' />
-          <button className='bg-green-600 p-2 rounded-sm text-white'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+        <div className='flex-grow'>
+          {!getuserId ? (
+          <div className=' flex h-full items-center flex-grow justify-center'>
+            <div className='font-bold text-gray-400 text-2xl'> &larr; select a person</div>
+          </div>) :
+          (<div>
+            {
+              allMessages.map(msg=>{
+                return <div>{msg.text}</div>
+              })
+            }
+          </div>)
+          }
+          </div>
+          {getuserId && <form className='flex gap-2 mx-2' onSubmit={sendMessage}>
+          <input value={message} onChange={(e)=>setMessage(e.target.value)}
+          type="text" placeholder='Type your messages' className='bg-white border-2 p-2 rounded-sm flex-grow' />
+          <button type="submit" className='bg-green-600 p-2 rounded-sm text-white'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
   <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
 </svg>
 </button>
-        </div>
+        </form>}
+        
       </div>
       </div>
   )

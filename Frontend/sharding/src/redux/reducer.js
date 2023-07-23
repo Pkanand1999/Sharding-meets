@@ -3,6 +3,7 @@ const initialState = {
     name:"",
     email:"",
     image:"",
+    id:"",
     token:localStorage.getItem("chatToken"),
     isError: false,
     isSignup:false,
@@ -34,6 +35,7 @@ const initialState = {
               email:action.payload.email,
               image:action.payload.image,
               token:action.payload.token,
+              id:action.payload._id,
             }
         
           }
@@ -45,6 +47,7 @@ const initialState = {
               email:action.payload.email,
               image:action.payload.image,
               token:action.payload.token,
+              id:action.payload._id,
             }
         
           }
