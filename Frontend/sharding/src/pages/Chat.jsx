@@ -8,7 +8,8 @@ import axios from 'axios'
 
 function Chat() {
   const [ws,setWs] = useState('');
-  const [onlineBuddy,setOnlineBuddy] = useState({})
+  const [onlineBuddy,setOnlineBuddy] = useState({});
+  const [offlinePeople,setOfflinePeople] = useState({});
   const [getuserId,setUserId] = useState(null);
   const [message,setMessage]=useState('');
   const [allMessages,setAllMessages] = useState([]);
@@ -96,6 +97,21 @@ useEffect(() => {
   }
 }, [allMessages]);
 
+useEffect(()=>{
+  axios.get('http://localhost:8080/people').then(res => {
+    // console.log(res.data,"data....");
+    const offlinePeopleArr = res.data
+      .filter(p => p._id !== id)
+      .filter(p => !Object.keys(onlineBuddy).includes(p._id));
+    const offlinePeople = {};
+    offlinePeopleArr.forEach(p => {
+      offlinePeople[p._id] = p.name;
+    });
+    // console.log(offlinePeople,"off",onlineBuddy)
+    setOfflinePeople(offlinePeople);
+  });
+},[onlineBuddy])
+
 let onlinePeoplehere={...onlineBuddy}
 delete onlinePeoplehere[id]
 const uniqueMessage= uniqBy(allMessages, '_id')
@@ -107,13 +123,24 @@ const uniqueMessage= uniqBy(allMessages, '_id')
         {
           Object.keys(onlinePeoplehere).map((userId) => {
             return <div onClick={()=>setUserId(userId)}
-            className={"border border-blue-400 py-2 pl-4 rounded-2xl flex gap-4 items-center mb-2 cursor-pointer "+(userId===getuserId? 'bg-blue-200':'bg-pink-200') }
+            className={"border border-blue-400 py-2 pl-4 rounded-2xl flex gap-4 items-center mb-2 cursor-pointer "+(userId===getuserId? 'bg-orange-300':'bg-pink-200') }
             key={[userId]}>
               <Avatar online={true} username={onlinePeoplehere[userId]} userId={userId}/>
               <span className='text-2xl font-bold text-teal-800'>{onlinePeoplehere[userId]}</span>
               </div>
           })
         }
+        {
+          Object.keys(offlinePeople).map((userId) => {
+            return <div onClick={()=>setUserId(userId)}
+            className={"border border-blue-400 py-2 pl-4 rounded-2xl flex gap-4 items-center mb-2 cursor-pointer "+(userId===getuserId? 'bg-orange-300':'bg-pink-200') }
+            key={[userId]}>
+              <Avatar online={false} username={offlinePeople[userId]} userId={userId}/>
+              <span className='text-2xl font-bold text-teal-800'>{offlinePeople[userId]}</span>
+              </div>
+          })
+        }
+        
       </div>
       <div className='bg-green-200 w-2/3 p-2 flex flex-col'>
         <div className='flex-grow'>

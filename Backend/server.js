@@ -33,7 +33,8 @@ app.get('/messages/:userId', async (req, res) => {
 });
 
 app.get('/people', async (req,res) => {
-    const users = await User.find({}, {'_id':1,username:1});
+    const users = await User.find({});
+    console.log(users)
     res.json(users);
   });
 
