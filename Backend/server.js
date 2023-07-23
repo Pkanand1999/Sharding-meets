@@ -25,13 +25,10 @@ app.get('/messages/:userId', async (req, res) => {
     let data = await User.findOne({ $or: [{ email: user.email }, { email: user }] });
     let myid = await data._id;
     myid = myid.toString();
-    // const userData = await getUserDataFromRequest(req);
-    // const ourUserId = userData.userId;
     const messages = await Message.find({
       sender:{$in:[userId,myid]},
       recipient:{$in:[userId,myid]},
     }).sort({createdAt: 1});
-    // console.log(messages)
     res.json(messages);
 });
 

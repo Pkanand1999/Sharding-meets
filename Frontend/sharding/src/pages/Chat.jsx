@@ -23,10 +23,15 @@ function Chat() {
   console.log(id)
 
   useEffect(()=>{
- const ws=new WebSocket('ws://localhost:8080')
- setWs(ws);
- ws.addEventListener('message',handleMessage);
+    connectToWs()
   },[])
+  // reconnect server ws 
+  function connectToWs() {
+    const ws=new WebSocket('ws://localhost:8080')
+    setWs(ws);
+    ws.addEventListener('message',handleMessage);
+    ws.addEventListener('close' ,() => connectToWs());
+  }
 
   function showOnlinePeople(people){
     const peopleObj={}
