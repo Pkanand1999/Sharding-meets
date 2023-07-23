@@ -4,6 +4,7 @@ const morgan=require('morgan');
 const Database=require('./config/db')
 const authRoute = require("./router/authRouter")
 const User = require("./model/userModel")
+const message= require("./model/message")
 const jwt = require('jsonwebtoken')
 const ws = require('ws');
 require('dotenv').config()
@@ -46,12 +47,17 @@ wss.on('connection',async(connection,req)=>{
           }
         }
 
-            connection.on('message',(message)=>{
+            connection.on('message',async (message)=>{
                 const messageData=JSON.parse(message.toString());
                 const{recipient,text} = messageData;
                 if(recipient && text){
+                    const messageDoc=await Message.create({
+                        sender:connection.userId,
+                        recipient,
+                        text,
+                    });
                     [...wss.clients].filter(client=>(client.userId==recipient))
-                    .forEach(client=>client.send(JSON.stringify({text})))
+                    .forEach(client=>client.send(JSON.stringify({text,sender:connection.userId,id:messageDoc._id})))
                 }
             });
 
