@@ -10,9 +10,9 @@ function Avatar({online,username,userId}) {
   const colorIndex = userIdBase10 % colors.length;
   const color = colors[colorIndex];
   useEffect(()=>{
-    let name=[...username]
-  let user=name[0];
-  setUserAvatar(user)
+    // let name=username;
+  console.log(username)
+  setUserAvatar(username[0])
   },[username,online]);
   
   return (
