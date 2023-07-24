@@ -4,7 +4,8 @@ import Logo from '../components/Logo';
 import { useSelector,useDispatch } from 'react-redux';
 import { userIsLoggedIn } from '../redux/middleware';
 import {uniqBy} from "lodash";
-import axios from 'axios'
+import axios from 'axios';
+// import JoditEditor from 'jodit-react'
 
 function Chat() {
   const [ws,setWs] = useState('');
@@ -14,7 +15,9 @@ function Chat() {
   const [message,setMessage]=useState('');
   const [allMessages,setAllMessages] = useState([]);
   const divUnderMessages = useRef();
+  // const editor=useRef(null)
   const dispatch=useDispatch();
+  const isWideScreen = window.innerWidth ;
   const data=useSelector((e)=>{
     return e.reducerAuth.token
   })
@@ -124,8 +127,9 @@ useEffect(()=>{
 
 // send file functionality 
 function sendFile(){
-
+alert('currently not working')
 }
+
 
 let onlinePeoplehere={...onlineBuddy}
 delete onlinePeoplehere[id]
@@ -133,7 +137,7 @@ const uniqueMessage= uniqBy(allMessages, '_id')
 
   return (
     <div className=' h-screen flex'>
-      <div className='bg-green-100 w-1/3 p-4 flex flex-col'>
+      <div className='bg-green-100 md:w-1/3 w-2/12 md:p-4 flex flex-col'>
         <div className='flex-grow'>
         <Logo/>
         {
@@ -142,7 +146,7 @@ const uniqueMessage= uniqBy(allMessages, '_id')
             className={"border border-blue-400 py-2 pl-4 rounded-2xl flex gap-4 items-center mb-2 cursor-pointer "+(userId===getuserId? 'bg-orange-300':'bg-pink-200') }
             key={[userId]}>
               <Avatar online={true} username={onlinePeoplehere[userId]} userId={userId}/>
-              <span className='text-2xl font-bold text-teal-800'>{onlinePeoplehere[userId]}</span>
+             {isWideScreen >470 && <span className='md:text-2xl text-sm font-bold text-teal-800'>{onlinePeoplehere[userId]}</span>}
               </div>
           })
         }
@@ -152,25 +156,28 @@ const uniqueMessage= uniqBy(allMessages, '_id')
             className={"border border-blue-400 py-2 pl-4 rounded-2xl flex gap-4 items-center mb-2 cursor-pointer "+(userId===getuserId? 'bg-orange-300':'bg-pink-200') }
             key={[userId]}>
               <Avatar online={false} username={offlinePeople[userId]} userId={userId}/>
-              <span className='text-2xl font-bold text-teal-800'>{offlinePeople[userId]}</span>
+              {isWideScreen >470 && <span className='md:text-2xl text-sm font-bold text-teal-800'>{offlinePeople[userId]}</span>}
               </div>
           })
         }
         </div>
         <div className='flex w-full'>
-          <div className='flex w-6/12 items-center gap-4'>
+          <div className='flex md:w-9/12 w-6/12 items-center gap-4'>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
   <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
 </svg>
-<span className='text-md font-bold text-gray-600'>{myname} &rarr;</span>
+{window.innerWidth> 650 && <span className='text-md font-bold text-gray-600'>{myname} &rarr;</span>}
           </div>
-        <div className='bottom-0 bg-red-500 w-6/12 flex items-center justify-center p-2 rounded-md cursor-pointer' onClick={Logout}>
-          <button className='text-md font-bold '>Log Out</button>
+        <div className='bottom-0 bg-red-500 md:w-3/12 w-6/12 flex items-center justify-center p-2 rounded-md text-white font-bold cursor-pointer' onClick={Logout}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+  <path fillRule="evenodd" d="M12 2.25a.75.75 0 01.75.75v9a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM6.166 5.106a.75.75 0 010 1.06 8.25 8.25 0 1011.668 0 .75.75 0 111.06-1.06c3.808 3.807 3.808 9.98 0 13.788-3.807 3.808-9.98 3.808-13.788 0-3.808-3.807-3.808-9.98 0-13.788a.75.75 0 011.06 0z" clipRule="evenodd" />
+</svg>
+
         </div>
         </div>
         
       </div>
-      <div className='bg-green-200 w-2/3 p-2 flex flex-col'>
+      <div className='bg-green-200 md:w-2/3 w-10/12 p-2 flex flex-col'>
         <div className='flex-grow'>
           {!getuserId ? (
           <div className=' flex h-full items-center flex-grow justify-center'>
@@ -181,8 +188,8 @@ const uniqueMessage= uniqBy(allMessages, '_id')
             <div className='overflow-y-scroll absolute inset-0'>
             {
               uniqueMessage.map((msg,i)=>{
-                return <div key={i} className={(msg.sender===id?'text-right':'text-left')}>
-                  <div  className={" p-2 m-2 text-sm rounded-md "+(msg.sender===id? ' bg-blue-500 text-white font-bold inline-block':'font-bold bg-pink-400 text-gray-600 inline-block')}>{msg.text}
+                return <div key={i} className={(msg.sender===id?'text-right ':'text-left ')}>
+                  <div  className={" p-2 m-2 text-sm rounded-md max-w-[60%] "+(msg.sender===id? ' bg-blue-500 text-white font-bold inline-block':'font-bold bg-pink-400 text-gray-600 inline-block')}>{msg.text}
                 </div>
                 </div>
               })
@@ -195,6 +202,14 @@ const uniqueMessage= uniqBy(allMessages, '_id')
           {!!getuserId && <form className='flex gap-2 mx-2' onSubmit={sendMessage}>
           <input value={message} onChange={(e)=>setMessage(e.target.value)}
           type="text" placeholder='Type your messages' className='bg-white border-2 p-2 rounded-sm flex-grow' />
+         {/* <JoditEditor
+			ref={editor}
+			value={message}
+			config={config}
+			tabIndex={1} // tabIndex of textarea
+			onBlur={newContent => setMessage(newContent)} // preferred to use only this option to update the content for performance reasons
+			onChange={newContent => {setMessage(newContent)}}
+		/> */}
           <label className='bg-green-900 p-2 rounded-sm text-white'>
           <input type="file" className='hidden' onChange={sendFile}/>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
