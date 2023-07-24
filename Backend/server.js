@@ -14,8 +14,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
-app.use('/api/v1/auth', authRoute)
 app.use(express.static("build"));
+app.use('/api/v1/auth', authRoute)
 
 app.get('/api/messages/:userId', async (req, res) => {
     const { userId } = req.params;
