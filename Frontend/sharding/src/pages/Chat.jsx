@@ -159,7 +159,7 @@ const uniqueMessage= uniqBy(allMessages, '_id')
           Object.keys(onlinePeoplehere).map((userId) => {
             return <div onClick={()=>setUserId(userId)}
             className={"border border-blue-400 py-2 pl-4 rounded-2xl flex gap-4 items-center mb-2 cursor-pointer "+(userId===getuserId? 'bg-orange-300':'bg-pink-200') }
-            key={[userId]}>
+            key={userId}>
               <Avatar online={true} username={onlinePeoplehere[userId]} userId={userId}/>
              {isWideScreen >470 && <span className='md:text-2xl text-sm font-bold text-teal-800'>{onlinePeoplehere[userId]}</span>}
               </div>
@@ -169,7 +169,7 @@ const uniqueMessage= uniqBy(allMessages, '_id')
           Object.keys(offlinePeople).map((userId) => {
             return <div onClick={()=>setUserId(userId)}
             className={"border border-blue-400 py-2 pl-4 rounded-2xl flex gap-4 items-center mb-2 cursor-pointer "+(userId===getuserId? 'bg-orange-300':'bg-pink-200') }
-            key={[userId]}>
+            key={userId}>
               <Avatar online={false} username={offlinePeople[userId]} userId={userId}/>
               {isWideScreen >470 && <span className='md:text-2xl text-sm font-bold text-teal-800'>{offlinePeople[userId]}</span>}
               </div>
