@@ -1,14 +1,13 @@
 import React from 'react'
 
 function Avatar({online,username,userId}) {
-    const colors = ['bg-teal-200', 'bg-red-200',
-                  'bg-green-200', 'bg-purple-200',
-                  'bg-blue-200', 'bg-yellow-200',
-                  'bg-orange-200', 'bg-pink-200', 'bg-fuchsia-200', 'bg-rose-200'];
+    const colors = ['bg-teal-400', 'bg-red-400',
+                  'bg-green-400', 'bg-purple-400',
+                  'bg-blue-400', 'bg-yellow-400',
+                  'bg-orange-400', 'bg-pink-400', 'bg-fuchsia-400', 'bg-rose-400'];
   const userIdBase10 = parseInt(userId.substring(10), 16);
   const colorIndex = userIdBase10 % colors.length;
   const color = colors[colorIndex];
-  username=username[0];
   return (
     <div className={"w-12 h-12 border-4 border-blue-600 relative rounded-full flex items-center "+color}>
         <span className='text-center w-full font-bold text-2xl text-green-800'>{username}</span>

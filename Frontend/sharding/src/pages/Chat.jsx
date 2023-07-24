@@ -64,18 +64,31 @@ function handleMessage(event) {
 }
 
 useEffect(()=>{
-  axios.get(`${process.env.REACT_APP_BASE_URL2}/api/people`).then(res => {
-    let offlinePeopleArr = res.data;
-    let offlinePeoplenow=offlinePeopleArr.filter(p => p._id !== id)
-      .filter(p => !Object.keys(onlineBuddy).includes(p._id));
-    const offlinePeople = {};
-    offlinePeoplenow.forEach(p => {
-      offlinePeople[p._id] = p.name;
-    });
-    // console.log(offlinePeople,"off",onlineBuddy)
-    setOfflinePeople(offlinePeople);
-  });
+  async function fetchOfflinePeople() {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL2}/api/people`);
+      const offlinePeopleArr = response.data;
+      const offlinePeoplenow = offlinePeopleArr.filter(p => p._id !== id)
+        .filter(p => !Object.keys(onlineBuddy).includes(p._id));
+
+      const offlinePeople = {};
+      offlinePeoplenow.forEach(p => {
+        offlinePeople[p._id] = p.name;
+      });
+
+      setOfflinePeople(offlinePeople);
+    } catch (error) {
+      // Handle the error here if the API request fails
+      console.error('Error fetching offline people:', error);
+    }
+  }
+
+  if (id) {
+    fetchOfflinePeople();
+  }
 },[onlineBuddy,id])
+
+
 
 // fetch messages 
 useEffect(()=>{
@@ -147,7 +160,7 @@ const uniqueMessage= uniqBy(allMessages, '_id')
             return <div onClick={()=>setUserId(userId)}
             className={"border border-blue-400 py-2 pl-4 rounded-2xl flex gap-4 items-center mb-2 cursor-pointer "+(userId===getuserId? 'bg-orange-300':'bg-pink-200') }
             key={[userId]}>
-              <Avatar online={true} username={onlinePeoplehere[userId]} userId={userId}/>
+              <Avatar online={true} username={onlinePeoplehere[userId][0]} userId={userId}/>
              {isWideScreen >470 && <span className='md:text-2xl text-sm font-bold text-teal-800'>{onlinePeoplehere[userId]}</span>}
               </div>
           })
@@ -157,7 +170,7 @@ const uniqueMessage= uniqBy(allMessages, '_id')
             return <div onClick={()=>setUserId(userId)}
             className={"border border-blue-400 py-2 pl-4 rounded-2xl flex gap-4 items-center mb-2 cursor-pointer "+(userId===getuserId? 'bg-orange-300':'bg-pink-200') }
             key={[userId]}>
-              <Avatar online={false} username={offlinePeople[userId]} userId={userId}/>
+              <Avatar online={false} username={offlinePeople[userId][0]} userId={userId}/>
               {isWideScreen >470 && <span className='md:text-2xl text-sm font-bold text-teal-800'>{offlinePeople[userId]}</span>}
               </div>
           })
