@@ -65,10 +65,11 @@ function handleMessage(event) {
 
 useEffect(()=>{
   axios.get(`${process.env.REACT_APP_BASE_URL2}/api/people`).then(res => {
-    const offlinePeopleArr = res.data.filter(p => p._id !== id)
+    let offlinePeopleArr = res.data;
+    let offlinePeoplenow=offlinePeopleArr.filter(p => p._id !== id)
       .filter(p => !Object.keys(onlineBuddy).includes(p._id));
     const offlinePeople = {};
-    offlinePeopleArr.forEach(p => {
+    offlinePeoplenow.forEach(p => {
       offlinePeople[p._id] = p.name;
     });
     // console.log(offlinePeople,"off",onlineBuddy)
