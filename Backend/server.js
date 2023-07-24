@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const Database = require('./config/db')
 const authRoute = require("./router/authRouter")
 const User = require("./model/userModel")
-const Message = require("./model/message")
+const Message = require("./model/Message")
 const jwt = require('jsonwebtoken')
 const ws = require('ws');
 require('dotenv').config()
