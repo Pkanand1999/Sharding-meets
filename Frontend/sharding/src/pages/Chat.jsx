@@ -21,6 +21,9 @@ function Chat() {
   const id=useSelector((e)=>{
     return e.reducerAuth.id
   })
+  const myname=useSelector((e)=>{
+    return e.reducerAuth.name
+  })
   console.log(id)
 
   useEffect(()=>{
@@ -148,10 +151,18 @@ const uniqueMessage= uniqBy(allMessages, '_id')
           })
         }
         </div>
-        
-        <div className='bottom-0 bg-red-500 w-full flex items-center justify-center p-2 rounded-md cursor-pointer' onClick={Logout}>
+        <div className='flex w-full'>
+          <div className='flex w-6/12 items-center gap-4'>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+  <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
+</svg>
+<span className='text-md font-bold text-gray-600'>{myname} &rarr;</span>
+          </div>
+        <div className='bottom-0 bg-red-500 w-6/12 flex items-center justify-center p-2 rounded-md cursor-pointer' onClick={Logout}>
           <button className='text-md font-bold '>Log Out</button>
         </div>
+        </div>
+        
       </div>
       <div className='bg-green-200 w-2/3 p-2 flex flex-col'>
         <div className='flex-grow'>
