@@ -66,7 +66,7 @@ function handleMessage(event) {
 useEffect(()=>{
   async function fetchOfflinePeople() {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL2}/api/people`);
+      const response = await axios.get('http://localhost:8080/api/people');
       const offlinePeopleArr = response.data;
       const offlinePeoplenow = offlinePeopleArr.filter(p => p._id !== id)
         .filter(p => !Object.keys(onlineBuddy).includes(p._id));
@@ -79,7 +79,7 @@ useEffect(()=>{
       setOfflinePeople(offlinePeople);
     } catch (error) {
       // Handle the error here if the API request fails
-      console.error('Error fetching offline people:', error);
+      console.log(error);
     }
   }
 
@@ -94,7 +94,7 @@ useEffect(()=>{
 useEffect(()=>{
   const authToken=localStorage.getItem('chatToken');
 if(getuserId){
-axios.get(`${process.env.REACT_APP_BASE_URL2}/api/messages/`+getuserId,
+axios.get('http://localhost:8080/api/messages/'+getuserId,
 {headers: {
   'authorization': `Bearer ${authToken}`
 }}).then((res)=>{
