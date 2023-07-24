@@ -15,8 +15,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use('/api/v1/auth', authRoute)
+app.use(express.static("build"));
 
-app.get('/messages/:userId', async (req, res) => {
+app.get('/api/messages/:userId', async (req, res) => {
     const { userId } = req.params;
     // console.log(userId, "idusers")
     const userData = req.headers.authorization.split(' ')[1];
@@ -32,14 +33,21 @@ app.get('/messages/:userId', async (req, res) => {
     res.json(messages);
 });
 
-app.get('/people', async (req,res) => {
+app.get('/api/people', async (req,res) => {
     const users = await User.find({});
     console.log(users)
     res.json(users);
   });
 
+
+
 const jwtSecret = process.env.JWT_SECRET_KEY;
 const port = process.env.PORT;
+
+app.get('*/',(req, res) =>{
+  res.sendFile(__dirname + '/build/index.html')
+})
+
 Database();
 const server = app.listen(port, () => {
     console.log(port)

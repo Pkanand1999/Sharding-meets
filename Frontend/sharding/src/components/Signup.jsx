@@ -9,6 +9,7 @@ function Signup({gotologin}) {
   const [username,setUsername]=useState('');
   const [email,setEmail]=useState('');
   const [password,setPassword]=useState('');
+  
   const data=useSelector((e)=>{
     return e.reducerAuth.token
   })

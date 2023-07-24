@@ -66,7 +66,7 @@ function handleMessage(event) {
 useEffect(()=>{
   const authToken=localStorage.getItem('chatToken');
 if(getuserId){
-axios.get('http://localhost:8080/messages/'+getuserId,
+axios.get(`${process.env.REACT_APP_BASE_URL2}/api/messages/`+getuserId,
 {headers: {
   'authorization': `Bearer ${authToken}`
 }}).then((res)=>{
@@ -110,7 +110,7 @@ function Logout(){
 }
 
 useEffect(()=>{
-  axios.get('http://localhost:8080/people').then(res => {
+  axios.get(`${process.env.REACT_APP_BASE_URL2}/api/people`).then(res => {
     // console.log(res.data,"data....");
     const offlinePeopleArr = res.data
       .filter(p => p._id !== id)
