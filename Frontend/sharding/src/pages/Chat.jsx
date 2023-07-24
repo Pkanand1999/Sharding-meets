@@ -11,13 +11,14 @@ function Chat() {
   const [ws,setWs] = useState('');
   const [onlineBuddy,setOnlineBuddy] = useState({});
   const [offlinePeople,setOfflinePeople] = useState({});
-  const [getuserId,setUserId] = useState(null);
+  const [getuserId,setUserId] = useState();
   const [message,setMessage]=useState('');
   const [allMessages,setAllMessages] = useState([]);
   const divUnderMessages = useRef();
   // const editor=useRef(null)
   const dispatch=useDispatch();
   const isWideScreen = window.innerWidth ;
+  
   const data=useSelector((e)=>{
     return e.reducerAuth.token
   })
@@ -30,8 +31,8 @@ function Chat() {
   console.log(id)
 
   useEffect(()=>{
-    connectToWs()
-  },[])
+      connectToWs()
+  },[getuserId])
   // reconnect server ws 
   function connectToWs() {
     const ws=new WebSocket('ws://localhost:8080')
@@ -61,6 +62,19 @@ function handleMessage(event) {
     }
   }
 }
+
+useEffect(()=>{
+  axios.get(`${process.env.REACT_APP_BASE_URL2}/api/people`).then(res => {
+    const offlinePeopleArr = res.data.filter(p => p._id !== id)
+      .filter(p => !Object.keys(onlineBuddy).includes(p._id));
+    const offlinePeople = {};
+    offlinePeopleArr.forEach(p => {
+      offlinePeople[p._id] = p.name;
+    });
+    // console.log(offlinePeople,"off",onlineBuddy)
+    setOfflinePeople(offlinePeople);
+  });
+},[onlineBuddy,id])
 
 // fetch messages 
 useEffect(()=>{
@@ -109,20 +123,7 @@ function Logout(){
   window.location.reload(false);
 }
 
-useEffect(()=>{
-  axios.get(`${process.env.REACT_APP_BASE_URL2}/api/people`).then(res => {
-    // console.log(res.data,"data....");
-    const offlinePeopleArr = res.data
-      .filter(p => p._id !== id)
-      .filter(p => !Object.keys(onlineBuddy).includes(p._id));
-    const offlinePeople = {};
-    offlinePeopleArr.forEach(p => {
-      offlinePeople[p._id] = p.name;
-    });
-    // console.log(offlinePeople,"off",onlineBuddy)
-    setOfflinePeople(offlinePeople);
-  });
-},[onlineBuddy])
+
 
 
 // send file functionality 
