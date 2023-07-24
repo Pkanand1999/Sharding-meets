@@ -35,7 +35,7 @@ function Chat() {
   },[getuserId])
   // reconnect server ws 
   function connectToWs() {
-    const ws=new WebSocket('ws://3.87.226.134:8080/')
+    const ws=new WebSocket('ws://3.87.226.134:8080')
     setWs(ws);
     ws.addEventListener('message',handleMessage);
     ws.addEventListener('close' ,() => connectToWs());
