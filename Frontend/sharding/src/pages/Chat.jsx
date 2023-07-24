@@ -35,7 +35,7 @@ function Chat() {
   },[getuserId])
   // reconnect server ws 
   function connectToWs() {
-    const ws=new WebSocket('ws://localhost:8080')
+    const ws=new WebSocket('ws://3.87.226.134:8080/')
     setWs(ws);
     ws.addEventListener('message',handleMessage);
     ws.addEventListener('close' ,() => connectToWs());
@@ -66,7 +66,7 @@ function handleMessage(event) {
 useEffect(()=>{
   async function fetchOfflinePeople() {
     try {
-      const response = await axios.get('http://localhost:8080/api/people');
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL2}/api/people `);
       const offlinePeopleArr = response.data;
       const offlinePeoplenow = offlinePeopleArr.filter(p => p._id !== id)
         .filter(p => !Object.keys(onlineBuddy).includes(p._id));
@@ -94,7 +94,7 @@ useEffect(()=>{
 useEffect(()=>{
   const authToken=localStorage.getItem('chatToken');
 if(getuserId){
-axios.get('http://localhost:8080/api/messages/'+getuserId,
+axios.get(`${process.env.REACT_APP_BASE_URL2}/api/messages/`+getuserId,
 {headers: {
   'authorization': `Bearer ${authToken}`
 }}).then((res)=>{
