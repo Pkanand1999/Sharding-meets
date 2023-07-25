@@ -16,7 +16,7 @@ function Avatar({online,username,userId}) {
   },[username,online]);
   
   return (
-    <div className={"w-12 h-12 border-4 border-blue-600 relative rounded-full flex items-center "+color}>
+    <div className={"md:w-12 md:h-12 h-8 w-8 border-4 border-blue-600 relative rounded-full flex items-center "+color}>
         <span className='text-center w-full font-bold text-2xl text-green-800'>{userAvatar}</span>
         <div className={"absolute w-4 h-4 -bottom-1 -right-1 rounded-full border-2 border-white "+(online?'bg-green-500':'bg-gray-400')}></div>
     </div>

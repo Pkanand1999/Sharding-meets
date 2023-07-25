@@ -152,7 +152,7 @@ delete onlinePeoplehere[id]
 const uniqueMessage= uniqBy(allMessages, '_id')
 
   return (
-    <div className=' h-screen flex'>
+    <div className=' h-screen flex w-full'>
       <div className='bg-green-100 md:w-1/3 w-2/12 md:p-4 flex flex-col'>
         <div className='flex-grow'>
         <Logo/>
@@ -169,7 +169,7 @@ const uniqueMessage= uniqBy(allMessages, '_id')
         {Object.keys(offlinePeople).length<1? "":
           (Object.keys(offlinePeople).map((userId) => {
             return <div onClick={()=>setUserId(userId)}
-            className={"border border-blue-400 py-2 pl-4 rounded-2xl flex gap-4 items-center mb-2 cursor-pointer "+(userId===getuserId? 'bg-orange-300':'bg-pink-200') }
+            className={"border border-blue-400 py-2 md:pl-4 pl-2 rounded-2xl flex md:gap-4 gap-2 items-center mb-2 cursor-pointer "+(userId===getuserId? 'bg-orange-300':'bg-pink-200') }
             key={userId}>
               <Avatar online={false} username={[...offlinePeople[userId]]} userId={userId}/>
               {isWideScreen >470 && <span className='md:text-2xl text-sm font-bold text-teal-800'>{offlinePeople[userId]}</span>}
@@ -215,7 +215,7 @@ const uniqueMessage= uniqBy(allMessages, '_id')
           </div>)
           }
           </div>
-          {!!getuserId && <form className='flex gap-2 mx-2' onSubmit={sendMessage}>
+          {!!getuserId && <form className='flex md:gap-2 md:mx-2' onSubmit={sendMessage}>
           <input value={message} onChange={(e)=>setMessage(e.target.value)}
           type="text" placeholder='Type your messages' className='bg-white border-2 p-2 rounded-sm flex-grow' />
          {/* <JoditEditor
