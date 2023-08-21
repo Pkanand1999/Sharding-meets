@@ -35,7 +35,7 @@ function Chat() {
   },[getuserId])
   // reconnect server ws 
   function connectToWs() {
-    const ws=new WebSocket('ws://localhost:8080')
+    const ws=new WebSocket('ws://lets-tlak.onrender.com')
     setWs(ws);
     ws.addEventListener('message',handleMessage);
     ws.addEventListener('close' ,() => connectToWs());
